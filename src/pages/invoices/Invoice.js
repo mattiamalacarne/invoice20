@@ -5,6 +5,7 @@ import AuthManager from "../../components/AuthManager";
 import Box from "../../components/Box";
 import { getClientLIst } from "../../services/ClientService";
 import { getListProduct } from "../../services/ProductService";
+import InvoiceProductListRow from "./InvoiceProductListRow";
 import InvoiceProductRow from "./InvoiceProductRow";
 
 import "./_invoice.scss"
@@ -18,7 +19,9 @@ const Invoice = () => {
     const [productList, setProductList] = useState(null)
     const [invoiceProductList, setInvoceProductList] = useState([])
 
-    
+    const [priceTotal, setPriceTotal] = useState(0)
+    const [total, setTotal] = useState(0)
+    const totale = 0
 
     useEffect(() => {
         getClientLIst()
@@ -30,18 +33,25 @@ const Invoice = () => {
             setProductList(list)
         })
 
-        addInvoiceProduct()
     },[])
 
-    const addInvoiceProduct = () => {
+    const delProduct = (product) => {
+        const p = invoiceProductList.filter(prod => prod !== product)
+        setInvoceProductList(p)
+        setPriceTotal(priceTotal-product.price)
+        setTotal(total-product.total)
+    }
+
+    const addProductToInvoiceList = (product) => {
+        
         let p = []
         invoiceProductList.forEach((pr) => {
             p.push(pr)
         })
-        p.push(null)
-        console.log(invoiceProductList)
-        
+        p.push(product)
         setInvoceProductList(p)
+        setPriceTotal(priceTotal+product.price)
+        setTotal(total+product.total)
     }
 
     return(
@@ -85,20 +95,42 @@ const Invoice = () => {
                         <p>Articolo</p>
                     </Col>
                     <Col>
-                        <p>Costo unitario</p>
+                        <p>Costo</p>
                     </Col>
                     <Col>
                         <p>Quantità</p>
                     </Col>
+                    <Col>
+                        <p></p>
+                    </Col>
                 
             </Row>
                     <Row>
-                        {productList && invoiceProductList.map((pList) => {
-                            return (
-                                <InvoiceProductRow key = {Math.random()} products={productList} />
-                            )
-                        })}
-                        <Button className = "title-button" onClick = {addInvoiceProduct}>Aggiungi</Button>
+                        <InvoiceProductRow add = {addProductToInvoiceList} key = {Math.random()} products={productList} />
+                            
+                        <Table>
+                            <thead>
+                                <th>Articolo</th>
+                                <th>Prezzo</th>
+                                <th>Q.ta</th>
+                                <th>Lordo</th>
+                                <th>Netto</th>
+                                <th></th>
+                            </thead>
+                            <tbody>
+                                {invoiceProductList && invoiceProductList.map((product) => {
+                                    return (<InvoiceProductListRow delProduct={delProduct} product={product}/>)
+                                })}
+                            </tbody>
+                        </Table>
+                    </Row>
+                    <hr></hr>
+                    <Row>
+                        <Col>
+                            <p>Totale lordo: {priceTotal}</p>
+                            <p>Ritenuta (20%): {priceTotal*0.2}</p>
+                            <p>Totale: {total} €</p>
+                        </Col>
                     </Row>
                 </Box>
             </div>
