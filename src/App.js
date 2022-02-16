@@ -1,24 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import { initializeApp } from "firebase/app";
+import { firConfig } from './configs/Config';
 
-function App() {
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Login from "./pages/login/Login";
+import Home from "./pages/home/Home";
+import Clients from "./pages/client/Clients";
+import Products from "./pages/product/Products";
+import Invoices from "./pages/invoices/Invoices";
+import Invoice from "./pages/invoices/Invoice";
+
+
+const App = () => {
+
+  const app = initializeApp(firConfig)
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+    <Routes>
+      <Route path="/" element={<Login />} />
+      <Route path="/home" element = {<Home />} />
+      <Route path="/clients" element = {<Clients />} />
+      <Route path="/products" element = {<Products />} />
+      <Route path="/invoices" element = {<Invoices />} />
+      <Route path="/invoices/:id" element = {<Invoice />} />
+    </Routes>
+    </BrowserRouter>
   );
 }
 
