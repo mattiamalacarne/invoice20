@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { firConfig } from './configs/Config';
+
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Login from "./pages/login/Login";
@@ -8,6 +8,7 @@ import Clients from "./pages/client/Clients";
 import Products from "./pages/product/Products";
 import Invoices from "./pages/invoices/Invoices";
 import Invoice from "./pages/invoices/Invoice";
+import { firConfig } from "./configs/Config";
 
 
 const App = () => {

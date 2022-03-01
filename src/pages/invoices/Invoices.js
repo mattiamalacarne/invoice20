@@ -6,6 +6,7 @@ import InvoiceListRow from "./InvoiceListRow";
 import { useNavigate } from "react-router-dom"
 
 import "./_invoice.scss"
+import { getAllInvoice } from "../../services/InvoiceService";
 
 const Invoices = () => {
 
@@ -16,6 +17,13 @@ const Invoices = () => {
     const showInvoiceInfo = (i) => {
         nav("/invoices/"+i)
     }
+
+    useEffect(() => {
+        getAllInvoice()
+        .then((i) => {
+            setInvoicesList(i)
+        })
+    }, [])
 
     return(
         <AuthManager>
@@ -35,8 +43,9 @@ const Invoices = () => {
             </thead>
             <tbody>
             {invoicesList && invoicesList.map((invoice) => {
+                console.log(invoice)
                 return(
-                    <InvoiceListRow key={invoice.id} onClick = {showInvoiceInfo} product = {invoice}/>
+                    <InvoiceListRow key={invoice.id} onClick = {showInvoiceInfo} invoice = {invoice}/>
                 )
             })}
             </tbody>

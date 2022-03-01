@@ -56,7 +56,7 @@ const InvoiceProductRow = ({products, index, add}) => {
                 </Col>
             </Row>
             </Form>
-            
+
         </div>
     )
 }
